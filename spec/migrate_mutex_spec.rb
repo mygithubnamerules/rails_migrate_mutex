@@ -23,7 +23,11 @@ end
 RSpec.describe 'rails-migrate-mutex' do
   let(:redis) { Redis.current }
 
-  before { redis.flushdb }
+  before :all do
+    redis.flushdb 
+    Rake::Task.define_task(:environment)
+  end
+
 
   it 'runs db:migrate in a redis mutex' do
     Array.new(2) do
